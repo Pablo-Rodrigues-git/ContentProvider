@@ -13,7 +13,7 @@ class NotesDatabaseHelper(
             "CREATE TABLE $TABLE_NOTES (" +
                     "$_ID INTEGER NOT NULL PRIMARY KEY , " +
                     "$TITTLE_NOTES TEXT NOT NULL, " +
-                    "$DESCRIPION_NOTES TEXT NOT NULL, ")
+                    "$DESCRIPTION_NOTES TEXT NOT NULL, ")
 
     }
 
@@ -22,7 +22,7 @@ class NotesDatabaseHelper(
     companion object{
         const val TABLE_NOTES: String = "Notes"
         const val TITTLE_NOTES: String = "tittle"
-        const val DESCRIPION_NOTES: String = "description"
+        const val DESCRIPTION_NOTES: String = "description"
     }
 
 }
