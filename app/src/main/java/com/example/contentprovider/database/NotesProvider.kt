@@ -9,10 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.media.UnsupportedSchemeException
 import android.net.Uri
 import android.provider.BaseColumns._ID
-import android.provider.ContactsContract.Intents.Insert.NOTES
-import android.provider.SettingsSlicesContract.BASE_URI
 import com.example.contentprovider.database.NotesDatabaseHelper.Companion.TABLE_NOTES
-import java.lang.UnsupportedOperationException
 
 class NotesProvider : ContentProvider() {
 
@@ -30,12 +27,12 @@ class NotesProvider : ContentProvider() {
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         if (mUriMatcher.match(uri) == NOTES_BY_ID) {
             val db: SQLiteDatabase = dbHelper.writableDatabase
-            val linesAffect = db.delete((TABLE_NOTES, "$_ID =?", arrayOf(uri.lastPathSegment))
+            val linesAffect = db.delete((TABLE_NOTES), "$_ID =?", arrayOf(uri.lastPathSegment))
             db.close()
             context?.contentResolver?.notifyChange(uri, null)
             return linesAffect
         } else {
-            throw UnsupportedSchemeException("Uri inválida exclusão!")
+            throw UnsupportedSchemeException("Uri inválida para exclusão!")
         }
 
     }
@@ -69,7 +66,7 @@ class NotesProvider : ContentProvider() {
             }
             mUriMatcher.match(uri) == NOTES_BY_ID ->{
                 val db:SQLiteDatabase = dbHelper.writableDatabase
-                val cursor = db.query(TABLE_NOTES, projection, "$_ID = ?", arrayOf(uri.lastPathSegment), null, null,sortOrder),
+                val cursor = db.query(TABLE_NOTES, projection, "$_ID = ?", arrayOf(uri.lastPathSegment), null, null,sortOrder)
                 cursor.setNotificationUri(context?.contentResolver,uri)
                 cursor
             }
@@ -83,7 +80,7 @@ class NotesProvider : ContentProvider() {
         uri: Uri, values: ContentValues?, selection: String?,
         selectionArgs: Array<String>?
     ): Int {
-        if (mUriMatcher.match() == NOTES_BY_ID){
+        if (mUriMatcher.match(uri) == NOTES_BY_ID){
             val db: SQLiteDatabase = dbHelper.writableDatabase
             val linesAffect = db.update(TABLE_NOTES, values, "$_ID = ?", arrayOf(uri.lastPathSegment))
             db.close()
